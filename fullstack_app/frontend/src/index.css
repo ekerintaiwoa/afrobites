@@ -1,0 +1,208 @@
+:root {
+  --orange: #F5A623;
+  --orange-light: #fff5df;
+  --black: #0A0A0A;
+  --white: #FAFAFA;
+  --gray-100: #F5F5F5;
+  --gray-200: #EEEEEE;
+  --gray-300: #E0E0E0;
+  --gray-700: #424242;
+  --gray-800: #212121;
+  --gray-900: #121212;
+  --card: #141414;
+  --soft: #f7f3eb;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #FAFAFA;
+  color: var(--black);
+  line-height: 1.55;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition);
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  transition: var(--transition);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Glassmorphism utility */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-dark {
+  background: rgba(10, 10, 10, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Common Section */
+.section {
+  padding: 80px 0;
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  margin-bottom: 24px;
+  line-height: 1.1;
+}
+
+.kicker {
+  color: var(--orange);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Buttons */
+.btn {
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 15px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary {
+  background: var(--orange);
+  color: #111;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(245, 166, 35, 0.3);
+}
+
+.btn-outline {
+  border: 2px solid var(--gray-300);
+}
+
+.btn-outline:hover {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 8px;
+  color: var(--gray-700);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1.6px solid #dedede;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 15px;
+  background: #fff;
+  transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.1);
+}
+
+/* Utilities */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.gap-6 { gap: 24px; }
+.gap-8 { gap: 32px; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.inset-0 { top: 0; left: 0; right: 0; bottom: 0; }
+.w-full { width: 100%; }
+.h-full { height: 100%; }
+.z-50 { z-index: 50; }
+.hidden { display: none; }
+.md-flex { display: flex; } /* Simplification for demonstration */
+
+@media (max-width: 768px) {
+  .md-flex { display: none; }
+  .md-hidden { display: flex; }
+}
+@media (min-width: 769px) {
+  .md-hidden { display: none; }
+}
+
+.text-white { color: var(--white); }
+.text-orange { color: var(--orange); }
+.text-black { color: var(--black); }
+.bg-orange { background: var(--orange); }
+.bg-transparent { background: transparent; }
+
+.font-bold { font-weight: 700; }
+.font-black { font-weight: 900; }
+.uppercase { text-transform: uppercase; }
+.tracking-widest { letter-spacing: 0.1em; }
+.tracking-tight { letter-spacing: -0.02em; }
+
+.py-3 { padding-top: 12px; padding-bottom: 12px; }
+.py-5 { padding-top: 20px; padding-bottom: 20px; }
+.py-8 { padding-top: 32px; padding-bottom: 32px; }
+.px-6 { padding-left: 24px; padding-right: 24px; }
+
+.rounded-full { border-radius: 999px; }
+.rounded-xl { border-radius: 12px; }
+
+.transition-all { transition: var(--transition); }
+.duration-300 { transition-duration: 300ms; }

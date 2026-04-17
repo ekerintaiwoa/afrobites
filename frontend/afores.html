@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>King's Afro Bites – Book a Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#F5A623; --black:#0A0A0A; --white:#FAFAFA; --muted:#707070; --card:#141414; --soft:#f7f3eb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--white);color:var(--black);line-height:1.55}
+html{scroll-behavior:smooth}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+nav{position:sticky;top:0;z-index:20;background:rgba(10,10,10,.94);backdrop-filter:blur(10px);color:#fff;border-bottom:1px solid #222}
+.nav-wrap{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:700}
+.brand-badge{width:40px;height:40px;border-radius:50%;background:var(--orange);color:#111;display:grid;place-items:center;font-weight:900}
+.nav-links{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.nav-links a{color:#ddd;font-size:14px;text-transform:uppercase;letter-spacing:.08em}
+.nav-links a:hover{color:var(--orange)}
+.cta{background:var(--orange);padding:12px 18px;border-radius:999px;color:#111;font-weight:700}
+.hero{background:linear-gradient(120deg, rgba(10,10,10,.98) 0%, rgba(10,10,10,.94) 45%, rgba(10,10,10,.75) 100%), url('images/ghana-jollof.jpg') center/cover; color:#fff}
+.hero-wrap{max-width:1200px;margin:0 auto;padding:80px 24px 48px;display:grid;grid-template-columns:1.2fr .9fr;gap:36px;align-items:center}
+.tag{display:inline-block;background:#1d1d1d;border:1px solid #333;color:var(--orange);padding:8px 14px;border-radius:999px;font-size:12px;text-transform:uppercase;letter-spacing:.12em;margin-bottom:20px}
+h1{font-family:'Playfair Display',serif;font-size:clamp(2.7rem, 7vw, 5.8rem);line-height:.98;margin-bottom:18px}
+.hero p{max-width:620px;color:#d2d2d2;font-size:18px;margin-bottom:28px}
+.hero-buttons{display:flex;gap:14px;flex-wrap:wrap}
+.btn-outline{border:2px solid #3a3a3a;color:#fff;padding:12px 18px;border-radius:999px;font-weight:700}
+.quick-book{background:#fff;color:#111;border-radius:28px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+.quick-book h3{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:8px}
+.quick-book p{font-size:14px;color:#666;margin-bottom:18px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid .full{grid-column:1/-1}
+label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#555;margin-bottom:6px;font-weight:700}
+input,select,textarea{width:100%;padding:13px 14px;border:1.6px solid #dedede;border-radius:14px;font:inherit;background:#fff}
+textarea{min-height:90px;resize:vertical}
+button{font:inherit;border:none;cursor:pointer}
+.primary-btn{background:var(--orange);color:#111;padding:14px 18px;border-radius:16px;font-weight:700}
+.secondary-btn{background:#111;color:#fff;padding:14px 18px;border-radius:16px;font-weight:700}
+.section{max-width:1200px;margin:0 auto;padding:72px 24px}
+.section-head{display:flex;justify-content:space-between;gap:24px;align-items:end;flex-wrap:wrap;margin-bottom:26px}
+.kicker{color:var(--orange);text-transform:uppercase;letter-spacing:.14em;font-size:12px;font-weight:700;margin-bottom:10px}
+h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3.4rem);line-height:1.05}
+.section-copy{max-width:620px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.card{background:#fff;border:1px solid #ececec;border-radius:24px;overflow:hidden;box-shadow:0 10px 24px rgba(0,0,0,.04)}
+.card img{height:220px;width:100%;object-fit:cover}
+.card-body{padding:18px}
+.card h3{font-size:1.1rem;margin-bottom:6px}
+.card p{color:var(--muted);font-size:14px;margin-bottom:14px}
+.pill-row{display:flex;gap:8px;flex-wrap:wrap}
+.pill{background:#fff5df;color:#704800;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.features{background:var(--soft)}
+.feature-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.feature{background:#fff;padding:22px;border-radius:22px;border:1px solid #eee}
+.feature .icon{font-size:28px;margin-bottom:10px}
+.feature h3{margin-bottom:8px}
+.two-col{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}
+.story-card,.group-card{background:#111;color:#fff;border-radius:28px;padding:28px}
+.story-card p,.group-card p{color:#d0d0d0}
+.group-list{margin-top:16px;display:grid;gap:10px}
+.group-list div{padding:12px 14px;background:#1b1b1b;border-radius:14px}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.contact-box,.hours-box{background:#fff;border:1px solid #ececec;padding:24px;border-radius:24px}
+.contact-row{display:flex;gap:12px;margin-bottom:16px}
+.contact-row strong{display:block}
+footer{background:#0a0a0a;color:#b8b8b8;padding:36px 24px}
+.footer-wrap{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.64);display:none;place-items:center;padding:20px;z-index:50}
+.modal-backdrop.open{display:grid}
+.modal{max-width:760px;width:100%;background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.35)}
+.modal-head{padding:24px;border-bottom:1px solid #eee;display:flex;justify-content:space-between;align-items:center}
+.modal-head h3{font-family:'Playfair Display',serif;font-size:1.8rem}
+.close-btn{width:40px;height:40px;border-radius:50%;background:#f4f4f4}
+.modal-body{padding:24px}
+.success{display:none;background:#eefbf0;border:1px solid #cfead4;color:#185b24;padding:14px 16px;border-radius:16px;margin-top:14px}
+.small{font-size:13px;color:#666}
+@media (max-width: 980px){
+  .hero-wrap,.two-col,.contact-grid,.cards,.feature-grid{grid-template-columns:1fr}
+}
+@media (max-width: 700px){
+  .nav-links{display:none}
+  .form-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-wrap">
+    <div class="brand">
+      <div class="brand-badge">K</div>
+      <div>King's Afro Bites</div>
+    </div>
+    <div class="nav-links">
+      <a href="#menu">Menu</a>
+      <a href="#experience">Experience</a>
+      <a href="#groups">Group Dining</a>
+      <a href="#contact">Contact</a>
+      <a href="#" class="cta" onclick="openBooking(event)">Book a Table</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-wrap">
+    <div>
+      <div class="tag">African dining in Hamburg</div>
+      <h1>Reserve a table for bold African flavours.</h1>
+      <p>King’s Afro Bites brings a warm, modern dining experience built around Ghanaian and West African classics. Discover signature dishes, pre-order favourites, and book your table in seconds.</p>
+      <div class="hero-buttons">
+        <a href="#" class="cta" onclick="openBooking(event)">Book a Table</a>
+        <a href="#menu" class="btn-outline">View Signature Dishes</a>
+      </div>
+    </div>
+    <aside class="quick-book">
+      <h3>Quick reservation</h3>
+      <p>Select your time, party size, and dining preference.</p>
+      <form class="form-grid" onsubmit="submitBooking(event, true)">
+        <div>
+          <label for="qb-date">Date</label>
+          <input id="qb-date" type="date" required>
+        </div>
+        <div>
+          <label for="qb-time">Time</label>
+          <select id="qb-time" required>
+            <option value="">Select</option>
+            <option>12:00</option><option>13:00</option><option>14:00</option>
+            <option>17:30</option><option>18:30</option><option>19:30</option><option>20:30</option>
+          </select>
+        </div>
+        <div>
+          <label for="qb-guests">Guests</label>
+          <select id="qb-guests" required>
+            <option>2 guests</option><option>3 guests</option><option>4 guests</option>
+            <option>5 guests</option><option>6 guests</option><option>7+ guests</option>
+          </select>
+        </div>
+        <div>
+          <label for="qb-seating">Seating</label>
+          <select id="qb-seating">
+            <option>Indoor</option><option>Window seat</option><option>Outdoor</option><option>No preference</option>
+          </select>
+        </div>
+        <div class="full">
+          <button class="primary-btn" type="submit">Check availability</button>
+        </div>
+      </form>
+      <div class="small" style="margin-top:12px">You can also add occasion notes, allergies, and pre-order dishes in the full booking form.</div>
+    </aside>
+  </div>
+</header>
+
+<section class="section" id="menu">
+  <div class="section-head">
+    <div>
+      <div class="kicker">Signature menu</div>
+      <h2>Dishes that turn first-time visitors into regulars</h2>
+    </div>
+    <p class="section-copy">This updated version puts food discovery beside the reservation journey, so guests understand what to expect before they book.</p>
+  </div>
+  <div class="cards">
+    <article class="card">
+      <img src="images/ghana-jollof.jpg" alt="Ghana Jollof">
+      <div class="card-body">
+        <h3>Ghana Jollof</h3>
+        <p>Smoky tomato rice with grilled chicken, balanced heat, and rich West African depth.</p>
+        <div class="pill-row"><span class="pill">Most popular</span><span class="pill">Mild spice</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <img src="images/waakye.jpg" alt="Waakye">
+      <div class="card-body">
+        <h3>Waakye</h3>
+        <p>Rice and beans with fish, shito, egg, and the layered textures guests remember.</p>
+        <div class="pill-row"><span class="pill">Traditional</span><span class="pill">Customer favourite</span></div>
+      </div>
+    </article>
+    <article class="card">
+      <img src="images/fufu-light-soup.jpg" alt="Fufu and Light Soup">
+      <div class="card-body">
+        <h3>Fufu &amp; Light Soup</h3>
+        <p>A classic comfort dish for guests seeking an authentic and hearty sit-down meal.</p>
+        <div class="pill-row"><span class="pill">Authentic</span><span class="pill">Chef's pick</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="section features" id="experience">
+  <div class="section-head">
+    <div>
+      <div class="kicker">New booking features</div>
+      <h2>What was added to the implementation</h2>
+    </div>
+  </div>
+  <div class="feature-grid">
+    <div class="feature"><div class="icon">📅</div><h3>Reservation-first homepage</h3><p>Guests can start booking from the hero section without hunting for the form.</p></div>
+    <div class="feature"><div class="icon">🎉</div><h3>Occasion selection</h3><p>Birthday, date night, family dinner, and other events can be noted upfront.</p></div>
+    <div class="feature"><div class="icon">🥜</div><h3>Allergy and notes field</h3><p>Special needs are captured before arrival for a smoother dining experience.</p></div>
+    <div class="feature"><div class="icon">🍲</div><h3>Dish pre-order</h3><p>Guests can request Jollof, Waakye, Fufu, or a chef’s platter with the booking.</p></div>
+  </div>
+</section>
+
+<section class="section" id="groups">
+  <div class="two-col">
+    <div class="story-card">
+      <div class="kicker">Brand story</div>
+      <h2 style="margin-bottom:14px">A startup site that sells the experience, not just the meal</h2>
+      <p>This version shifts the old delivery-style structure into a dine-in reservation site. It keeps the King’s Afro Bites identity while making table booking, guest intent, and cultural discovery the main journey. The uploaded source already centered booking with a reservation modal, but also still contained ordering and checkout flows, so this implementation refocuses the site around tables and in-person dining. fileciteturn3file0</p>
+    </div>
+    <div class="group-card">
+      <div class="kicker">Private dining</div>
+      <h2 style="margin-bottom:14px">For birthdays, teams, and community nights</h2>
+      <p>Large-party messaging helps an early-stage restaurant win group bookings and repeat events.</p>
+      <div class="group-list">
+        <div>Up to 12 guests for family-style dining</div>
+        <div>Birthday setup request in booking flow</div>
+        <div>Corporate or community dinner enquiry block</div>
+        <div>Pre-selected signature platter option</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="section-head">
+    <div>
+      <div class="kicker">Visit us</div>
+      <h2>Hamburg contact and opening information</h2>
+    </div>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-box">
+      <div class="contact-row"><div>📍</div><div><strong>Location</strong>Hamburg, Germany</div></div>
+      <div class="contact-row"><div>📞</div><div><strong>Phone</strong><a href="tel:+4915775167689">+49 157 7516 7689</a></div></div>
+      <div class="contact-row"><div>💬</div><div><strong>WhatsApp bookings</strong><a href="https://wa.me/4915775167689" target="_blank" rel="noopener">Message the restaurant</a></div></div>
+    </div>
+    <div class="hours-box">
+      <div class="contact-row"><div>🕒</div><div><strong>Opening hours</strong>Mon–Sun · 12:00–22:00</div></div>
+      <p style="color:var(--muted);margin-top:8px">For larger groups or special dining setups, use the booking form and choose “7+ guests”.</p>
+      <div style="margin-top:18px"><a href="#" class="cta" onclick="openBooking(event)">Open full reservation form</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-wrap">
+    <div>© 2026 King's Afro Bites</div>
+    <div>Reservation-focused demo implementation</div>
+  </div>
+</footer>
+
+<div class="modal-backdrop" id="bookingModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Complete your reservation</h3>
+      <button class="close-btn" onclick="closeBooking()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <form class="form-grid" onsubmit="submitBooking(event, false)">
+        <div>
+          <label for="name">Full name</label>
+          <input id="name" type="text" required>
+        </div>
+        <div>
+          <label for="phone">Phone number</label>
+          <input id="phone" type="tel" required>
+        </div>
+        <div>
+          <label for="email">Email</label>
+          <input id="email" type="email">
+        </div>
+        <div>
+          <label for="guests">Party size</label>
+          <select id="guests">
+            <option>2 guests</option><option>3 guests</option><option>4 guests</option><option>5 guests</option><option>6 guests</option><option>7+ guests</option>
+          </select>
+        </div>
+        <div>
+          <label for="date">Date</label>
+          <input id="date" type="date" required>
+        </div>
+        <div>
+          <label for="time">Time</label>
+          <select id="time" required>
+            <option value="">Select</option>
+            <option>12:00</option><option>13:00</option><option>14:00</option>
+            <option>17:30</option><option>18:30</option><option>19:30</option><option>20:30</option>
+          </select>
+        </div>
+        <div>
+          <label for="seating">Seating preference</label>
+          <select id="seating">
+            <option>Indoor</option><option>Window seat</option><option>Outdoor</option><option>No preference</option>
+          </select>
+        </div>
+        <div>
+          <label for="occasion">Occasion</label>
+          <select id="occasion">
+            <option>Casual dinner</option><option>Birthday</option><option>Date night</option><option>Family dinner</option><option>Business meal</option>
+          </select>
+        </div>
+        <div>
+          <label for="preorder">Pre-order a dish</label>
+          <select id="preorder">
+            <option>No pre-order</option><option>Ghana Jollof</option><option>Waakye</option><option>Fufu & Light Soup</option><option>Chef's sharing platter</option>
+          </select>
+        </div>
+        <div>
+          <label for="allergies">Allergies</label>
+          <input id="allergies" type="text" placeholder="Peanuts, seafood, gluten, none">
+        </div>
+        <div class="full">
+          <label for="notes">Special request</label>
+          <textarea id="notes" placeholder="Window seat, birthday candle, stroller space, large-group details..."></textarea>
+        </div>
+        <div class="full" style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="primary-btn" type="submit">Confirm reservation</button>
+          <button class="secondary-btn" type="button" onclick="sendWhatsApp()">Reserve via WhatsApp</button>
+        </div>
+      </form>
+      <div class="success" id="successMessage">Reservation captured for demo. Connect this form to email, WhatsApp, or a database to make it live.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+function setMinDates(){
+  const today = new Date().toISOString().split('T')[0];
+  ['qb-date','date'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el){ el.min = today; if(!el.value) el.value = today; }
+  });
+}
+function openBooking(e){
+  if(e) e.preventDefault();
+  document.getElementById('bookingModal').classList.add('open');
+  setMinDates();
+}
+function closeBooking(){
+  document.getElementById('bookingModal').classList.remove('open');
+}
+function submitBooking(e, fromQuick){
+  e.preventDefault();
+  setMinDates();
+  if(fromQuick){
+    document.getElementById('date').value = document.getElementById('qb-date').value;
+    document.getElementById('time').value = document.getElementById('qb-time').value;
+    document.getElementById('guests').value = document.getElementById('qb-guests').value;
+    document.getElementById('seating').value = document.getElementById('qb-seating').value;
+    openBooking();
+    return;
+  }
+  document.getElementById('successMessage').style.display = 'block';
+}
+function sendWhatsApp(){
+  const date = encodeURIComponent(document.getElementById('date').value || document.getElementById('qb-date').value || '');
+  const time = encodeURIComponent(document.getElementById('time').value || document.getElementById('qb-time').value || '');
+  const guests = encodeURIComponent(document.getElementById('guests').value || document.getElementById('qb-guests').value || '');
+  const occasion = encodeURIComponent(document.getElementById('occasion').value || '');
+  const msg = `Hello King's Afro Bites, I would like to reserve a table. Date: ${decodeURIComponent(date)} | Time: ${decodeURIComponent(time)} | Guests: ${decodeURIComponent(guests)} | Occasion: ${decodeURIComponent(occasion)}`;
+  window.open(`https://wa.me/4915775167689?text=${encodeURIComponent(msg)}`,'_blank');
+}
+window.addEventListener('DOMContentLoaded', setMinDates);
+window.addEventListener('click', function(e){
+  const modal = document.getElementById('bookingModal');
+  if(e.target === modal) closeBooking();
+});
+</script>
+</body>
+</html>
