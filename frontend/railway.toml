@@ -1,8 +1,10 @@
+[env]
+NIXPACKS_NODE_VERSION = "20.19.0"
+
 [build]
 builder = "NIXPACKS"
+buildCommand = "npm install && npm run build"
 
 [deploy]
-# Nixpacks will auto-detect the build and start commands for a Vite/Node app.
-# We'll set a standard health check.
 healthCheckPath = "/"
 healthCheckTimeout = 100

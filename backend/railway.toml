@@ -1,6 +1,7 @@
-[env]
-NIXPACKS_NODE_VERSION = "20.19.0"
-
-
 [build]
-buildCommand = "rm -rf node_modules package-lock.json && npm install && npm run build"
+builder = "NIXPACKS"
+
+[deploy]
+startCommand = "gunicorn afrobites.wsgi --log-file -"
+healthCheckPath = "/admin/"
+healthCheckTimeout = 100
