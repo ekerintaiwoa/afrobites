@@ -1,6 +1,11 @@
 [build]
 builder = "NIXPACKS"
 
+
+[env]
+NIXPACKS_NODE_VERSION = "20.19.0"
+
+
 [deploy]
 startCommand = "gunicorn afrobites.wsgi --log-file -"
 healthCheckPath = "/admin/"
