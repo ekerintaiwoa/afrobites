@@ -1,0 +1,8 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+# Nixpacks will auto-detect the build and start commands for a Vite/Node app.
+# We'll set a standard health check.
+healthCheckPath = "/"
+healthCheckTimeout = 100
