@@ -1,8 +1,9 @@
 [env]
-NIXPACKS_NODE_VERSION = "20.19.0"
+NIXPACKS_NODE_VERSION = "22.12.0"
 
 [build]
 builder = "NIXPACKS"
+# Using a clean install to avoid the Vite/Rolldown native binding bug
 buildCommand = "npm install && npm run build"
 
 [deploy]
