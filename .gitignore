@@ -1,3 +1,6 @@
+# Directories
+fullstack_app/
+
 # Python/Django
 __pycache__/
 *.py[cod]
