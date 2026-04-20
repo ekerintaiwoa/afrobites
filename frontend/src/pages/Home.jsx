@@ -6,11 +6,18 @@ import api from '../api';
 const Home = () => {
     const { t, setIsResModalOpen } = useAppContext();
     const [featuredDishes, setFeaturedDishes] = useState([]);
+    const [reviews, setReviews] = useState([]);
 
     useEffect(() => {
         api.get('menu-items/')
             .then(res => {
                 setFeaturedDishes(res.data.slice(0, 4));
+            })
+            .catch(err => console.error(err));
+
+        api.get('reviews/')
+            .then(res => {
+                setReviews(res.data);
             })
             .catch(err => console.error(err));
     }, []);
@@ -53,16 +60,10 @@ const Home = () => {
                                     <option>Select</option><option>12:00</option><option>18:30</option><option>20:00</option>
                                 </select>
                             </div>
-                            <div>
+                            <div style={{ gridColumn: '1 / -1' }}>
                                 <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '8px' }}>Guests</label>
                                 <select style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px', appearance: 'none', background: 'white' }}>
                                     <option>2 guests</option><option>4 guests</option><option>6 guests</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '8px' }}>Seating</label>
-                                <select style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px', appearance: 'none', background: 'white' }}>
-                                    <option>Window seat</option><option>Indoor</option><option>Outdoor</option>
                                 </select>
                             </div>
                         </div>
@@ -148,6 +149,24 @@ const Home = () => {
                     </div>
                 </div>
             </section>
+
+            {reviews.length > 0 && (
+                <section className="section" style={{ background: '#f9f9f9', padding: '80px 5%' }}>
+                    <div className="section-tag" style={{ textAlign: 'center' }}>Words of Love</div>
+                    <h2 className="section-title" style={{ textAlign: 'center', marginBottom: '40px' }}>What Our Guests Say</h2>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '30px' }}>
+                        {reviews.map(review => (
+                            <div key={review.id} style={{ background: 'white', padding: '30px', borderRadius: '20px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+                                <div style={{ display: 'flex', color: 'var(--orange)', marginBottom: '16px' }}>
+                                    {[...Array(review.rating)].map((_, i) => <span key={i}>★</span>)}
+                                </div>
+                                <p style={{ fontSize: '16px', color: '#555', lineHeight: '1.6', marginBottom: '24px', fontStyle: 'italic' }}>"{review.text}"</p>
+                                <div style={{ fontWeight: 800, fontSize: '14px' }}>{review.author}</div>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            )}
         </div>
     );
 };

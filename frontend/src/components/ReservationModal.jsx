@@ -10,11 +10,9 @@ const ReservationModal = ({ isOpen, onClose }) => {
     party_size: 2,
     date: new Date().toISOString().split('T')[0],
     time: '18:30',
-    seating_preference: 'Indoor',
     occasion: 'Casual dinner',
     preorder_dish: 'No pre-order',
     allergies: '',
-    special_request: '',
   });
 
   const [isSuccess, setIsSuccess] = useState(false);
@@ -49,8 +47,7 @@ const ReservationModal = ({ isOpen, onClose }) => {
 - Date: ${formData.date}
 - Time: ${formData.time}
 - Guests: ${formData.party_size}
-- Occasion: ${formData.occasion}
-${formData.special_request ? `- Request: ${formData.special_request}` : ''}`;
+- Occasion: ${formData.occasion}`;
     
     window.open(`https://wa.me/4915775167689?text=${encodeURIComponent(text)}`, '_blank');
   };
@@ -149,12 +146,6 @@ ${formData.special_request ? `- Request: ${formData.special_request}` : ''}`;
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '20px' }}>
                 <div className="form-item">
-                  <label className="label-style">Seating Preference</label>
-                  <select name="seating_preference" value={formData.seating_preference} onChange={handleChange} className="light-input">
-                    <option>Indoor</option><option>Window view</option><option>Terrace</option>
-                  </select>
-                </div>
-                <div className="form-item">
                   <label className="label-style">Occasion</label>
                   <select name="occasion" value={formData.occasion} onChange={handleChange} className="light-input">
                     <option>Casual dinner</option><option>Birthday</option><option>Business</option><option>Anniversary</option>
@@ -173,18 +164,6 @@ ${formData.special_request ? `- Request: ${formData.special_request}` : ''}`;
                   <label className="label-style">Allergies</label>
                   <input name="allergies" value={formData.allergies} onChange={handleChange} placeholder="Peanuts, seafood, gluten, none" className="light-input" />
                 </div>
-              </div>
-
-              <div className="form-item">
-                <label className="label-style">Special Request</label>
-                <textarea 
-                  name="special_request" 
-                  value={formData.special_request} 
-                  onChange={handleChange} 
-                  placeholder="Window seat, birthday candle, stroller space, large-group details..."
-                  className="light-input"
-                  style={{ minHeight: '100px', resize: 'vertical' }}
-                ></textarea>
               </div>
 
               {/* Actions */}

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, MenuItem, BlogPost, Order, OrderItem, Reservation
+from .models import Category, MenuItem, BlogPost, Order, OrderItem, Reservation, Comment, Review
 
 class MenuItemBasicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +19,18 @@ class MenuItemSerializer(serializers.ModelSerializer):
         model = MenuItem
         fields = '__all__'
 
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = '__all__'
+
 class BlogPostSerializer(serializers.ModelSerializer):
+    comments = CommentSerializer(many=True, read_only=True)
     class Meta:
         model = BlogPost
         fields = '__all__'

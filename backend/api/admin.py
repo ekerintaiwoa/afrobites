@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, MenuItem, BlogPost, Order, OrderItem, Reservation
+from .models import Category, MenuItem, BlogPost, Order, OrderItem, Reservation, Comment, Review
 
 class OrderItemInline(admin.TabularInline):
     model = OrderItem
@@ -28,3 +28,11 @@ class ReservationAdmin(admin.ModelAdmin):
     list_display = ('full_name', 'date', 'time', 'party_size', 'occasion', 'created_at')
     list_filter = ('date', 'occasion', 'seating_preference')
     search_fields = ('full_name', 'phone', 'email')
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('author', 'post', 'created_at')
+
+@admin.register(Review)
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ('author', 'rating', 'created_at')

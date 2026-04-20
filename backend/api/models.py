@@ -19,8 +19,22 @@ class BlogPost(models.Model):
     excerpt = models.TextField()
     content = models.TextField()
     date = models.DateField(auto_now_add=True)
-    image_emoji = models.CharField(max_length=10, blank=True, null=True)
+    image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
     def __str__(self): return self.title
+
+class Comment(models.Model):
+    post = models.ForeignKey(BlogPost, on_delete=models.CASCADE, related_name='comments')
+    author = models.CharField(max_length=100)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self): return f"Comment by {self.author} on {self.post.title}"
+
+class Review(models.Model):
+    author = models.CharField(max_length=100)
+    rating = models.PositiveIntegerField(default=5)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self): return f"Review by {self.author}"
 
 class Order(models.Model):
     full_name = models.CharField(max_length=200)
