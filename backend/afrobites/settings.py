@@ -137,3 +137,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://afrobites-backend-production.up.railway.app',
+    'https://www.kingsafrobites.com',
+    'https://afrobites-frontend-production.up.railway.app',
+]
