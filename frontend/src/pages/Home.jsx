@@ -1,9 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { Link } from 'react-router-dom';
+import api from '../api';
 
 const Home = () => {
-    const { t, addToCart, setIsResModalOpen } = useAppContext();
+    const { t, setIsResModalOpen } = useAppContext();
+    const [featuredDishes, setFeaturedDishes] = useState([]);
+
+    useEffect(() => {
+        api.get('menu-items/')
+            .then(res => {
+                setFeaturedDishes(res.data.slice(0, 4));
+            })
+            .catch(err => console.error(err));
+    }, []);
 
     return (
         <div id="home-page" className="page active" style={{ padding: '0', minHeight: 'auto' }}>
@@ -107,18 +117,15 @@ const Home = () => {
                 <h2 className="section-title" dangerouslySetInnerHTML={{ __html: t('feat-title') }} style={{ color: 'var(--white)' }}></h2>
                 <p className="section-sub" style={{ color: '#777' }}>{t('feat-sub')}</p>
                 <div className="dishes-grid">
-                    {[
-                        { name: 'Ghana Jollof', price: 12.90, desc: 'Smoky, perfectly spiced tomato rice with grilled chicken — the crown jewel of Ghanaian cuisine.', image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&q=80&w=800' },
-                        { name: 'Waakye', price: 11.90, desc: 'Ghana\'s legendary rice & beans dish served with fried fish, spaghetti, egg, and rich stew.', image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&q=80&w=800' },
-                        { name: 'Fufu & Light Soup', price: 13.90, desc: 'Silky pounded cassava & plantain with aromatic chicken light soup — a Ghanaian soul food classic.', image: 'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?auto=format&fit=crop&q=80&w=800' },
-                        { name: 'Afro Burgers', price: 9.90, desc: 'Beef, chicken or vegan — all loaded with West African spices, fresh greens and our signature Afro sauce on a brioche bun.', image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&q=80&w=800' }
-                    ].map(dish => (
-                        <div className="dish-card" key={dish.name} onClick={() => addToCart({ name: dish.name, price: dish.price })}>
-                            <div style={{ height: '220px', backgroundImage: `url(${dish.image})`, backgroundSize: 'cover', backgroundPosition: 'center', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}></div>
+                    {featuredDishes.map(dish => (
+                        <div className="dish-card" key={dish.id} style={{ cursor: 'default' }}>
+                            {dish.image && (
+                                <div style={{ height: '220px', backgroundImage: `url(${dish.image})`, backgroundSize: 'cover', backgroundPosition: 'center', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}></div>
+                            )}
                             <div className="dish-info">
                                 <div className="dish-name">{dish.name}</div>
-                                <div className="dish-desc">{dish.desc}</div>
-                                <div className="dish-footer"><span className="dish-price">€{dish.price.toFixed(2)}</span><button className="add-btn" onClick={(e) => { e.stopPropagation(); addToCart({ name: dish.name, price: dish.price }); }}>+ Add</button></div>
+                                <div className="dish-desc">{dish.description || dish.desc}</div>
+                                <div className="dish-footer"><span className="dish-price">€{parseFloat(dish.price).toFixed(2)}</span></div>
                             </div>
                         </div>
                     ))}
