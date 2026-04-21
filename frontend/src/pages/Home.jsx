@@ -7,6 +7,34 @@ const Home = () => {
     const { t, setIsResModalOpen } = useAppContext();
     const [featuredDishes, setFeaturedDishes] = useState([]);
     const [reviews, setReviews] = useState([]);
+    const [ourStory, setOurStory] = useState(null);
+
+    // Quick reservation state
+    const [quickRes, setQuickRes] = useState({ date: new Date().toISOString().split('T')[0], time: '', guests: '2 guests', name: '', phone: '' });
+    const [availabilityMsg, setAvailabilityMsg] = useState(null);
+    const [availabilityAlts, setAvailabilityAlts] = useState([]);
+
+    const handleCheckAvailability = () => {
+        if (!quickRes.name || !quickRes.phone || !quickRes.date || !quickRes.time) {
+            setAvailabilityMsg({ type: 'error', text: 'Please fill in date, time, name and phone.' });
+            return;
+        }
+        api.post('check-availability/', quickRes)
+            .then(res => {
+                if(res.data.success) {
+                    setAvailabilityMsg({ type: 'success', text: res.data.message });
+                    setAvailabilityAlts([]);
+                    setQuickRes({ ...quickRes, name: '', phone: '' }); // Reset fields
+                } else {
+                    setAvailabilityMsg({ type: 'error', text: res.data.message });
+                    setAvailabilityAlts(res.data.alternatives || []);
+                }
+            })
+            .catch(err => {
+                setAvailabilityMsg({ type: 'error', text: 'An error occurred. Please try again.' });
+                console.error(err);
+            });
+    };
 
     useEffect(() => {
         api.get('menu-items/')
@@ -18,6 +46,14 @@ const Home = () => {
         api.get('reviews/')
             .then(res => {
                 setReviews(res.data);
+            })
+            .catch(err => console.error(err));
+
+        api.get('our-story/')
+            .then(res => {
+                if (res.data && res.data.length > 0) {
+                    setOurStory(res.data[0]);
+                }
             })
             .catch(err => console.error(err));
     }, []);
@@ -47,29 +83,53 @@ const Home = () => {
                     {/* Right Side: Quick Reservation Card */}
                     <div className="quick-res-card" style={{ flex: '1', minWidth: '360px', background: 'white', borderRadius: '32px', padding: '40px', boxShadow: '0 30px 60px rgba(0,0,0,0.5)', animation: 'slideRight 0.8s ease-out' }}>
                         <h3 style={{ color: 'var(--black)', fontFamily: "'Playfair Display', serif", fontSize: '28px', fontWeight: 900, marginBottom: '8px' }}>Quick reservation</h3>
-                        <p style={{ color: '#666', fontSize: '14px', marginBottom: '30px' }}>Select your time, party size, and dining preference.</p>
+                        <p style={{ color: '#666', fontSize: '14px', marginBottom: '20px' }}>Select your time, party size, and dining preference.</p>
                         
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '24px' }}>
-                            <div>
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '8px' }}>Date</label>
-                                <input type="date" style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px' }} defaultValue={new Date().toISOString().split('T')[0]} />
+                        {availabilityMsg && (
+                            <div style={{ padding: '12px', borderRadius: '8px', marginBottom: '16px', background: availabilityMsg.type === 'success' ? '#e6ffe6' : '#ffe6e6', color: availabilityMsg.type === 'success' ? 'green' : 'red', fontSize: '14px', fontWeight: 'bold' }}>
+                                {availabilityMsg.text}
+                            </div>
+                        )}
+                        {availabilityAlts.length > 0 && (
+                            <div style={{ marginBottom: '16px' }}>
+                                <p style={{ fontSize: '13px', color: '#555', marginBottom: '8px', fontWeight: 700 }}>Available alternatives:</p>
+                                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                                    {availabilityAlts.map((alt, i) => (
+                                        <div key={i} style={{ padding: '6px 12px', background: '#f0f0f0', borderRadius: '16px', fontSize: '12px', cursor: 'pointer', border: '1px solid #ddd' }} onClick={() => { setQuickRes({...quickRes, date: alt.date, time: alt.time}); setAvailabilityMsg(null); setAvailabilityAlts([]); }}>
+                                            {alt.date} {alt.time}
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                        
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+                            <div style={{ gridColumn: '1 / -1' }}>
+                                <input placeholder="Full Name" value={quickRes.name} onChange={e => setQuickRes({...quickRes, name: e.target.value})} style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px' }} />
+                            </div>
+                            <div style={{ gridColumn: '1 / -1' }}>
+                                <input placeholder="Phone Number" value={quickRes.phone} onChange={e => setQuickRes({...quickRes, phone: e.target.value})} style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px' }} />
                             </div>
                             <div>
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '8px' }}>Time</label>
-                                <select style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px', appearance: 'none', background: 'white' }}>
-                                    <option>Select</option><option>12:00</option><option>18:30</option><option>20:00</option>
+                                <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '4px' }}>Date</label>
+                                <input type="date" value={quickRes.date} onChange={e => setQuickRes({...quickRes, date: e.target.value})} style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px' }} />
+                            </div>
+                            <div>
+                                <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '4px' }}>Time</label>
+                                <select value={quickRes.time} onChange={e => setQuickRes({...quickRes, time: e.target.value})} style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px', appearance: 'none', background: 'white' }}>
+                                    <option value="">Select</option><option value="12:00">12:00</option><option value="18:30">18:30</option><option value="20:00">20:00</option>
                                 </select>
                             </div>
                             <div style={{ gridColumn: '1 / -1' }}>
-                                <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '8px' }}>Guests</label>
-                                <select style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px', appearance: 'none', background: 'white' }}>
+                                <label style={{ display: 'block', fontSize: '11px', fontWeight: 900, color: '#888', textTransform: 'uppercase', marginBottom: '4px' }}>Guests</label>
+                                <select value={quickRes.guests} onChange={e => setQuickRes({...quickRes, guests: e.target.value})} style={{ width: '100%', padding: '12px', border: '1px solid #eee', borderRadius: '12px', fontSize: '14px', appearance: 'none', background: 'white' }}>
                                     <option>2 guests</option><option>4 guests</option><option>6 guests</option>
                                 </select>
                             </div>
                         </div>
 
                         <button 
-                            onClick={() => setIsResModalOpen(true)}
+                            onClick={handleCheckAvailability}
                             style={{ width: '100%', background: 'var(--orange)', color: 'var(--black)', border: 'none', padding: '16px', borderRadius: '12px', fontWeight: 900, fontSize: '16px', cursor: 'pointer', marginBottom: '20px' }}
                         >
                             Check availability
@@ -135,16 +195,16 @@ const Home = () => {
 
             <section className="section">
                 <div className="about-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '60px', alignItems: 'center' }}>
-                    <div style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1414235077428-338988a92215?auto=format&fit=crop&q=80&w=1200)', backgroundSize: 'cover', backgroundPosition: 'center', height: '400px', borderRadius: '24px' }}></div>
+                    <div style={{ backgroundImage: `url(${ourStory?.image || 'https://images.unsplash.com/photo-1414235077428-338988a92215?auto=format&fit=crop&q=80&w=1200'})`, backgroundSize: 'cover', backgroundPosition: 'center', height: '400px', borderRadius: '24px' }}></div>
                     <div className="about-text">
-                        <div className="section-tag">{t('about-tag')}</div>
-                        <h2 className="section-title" dangerouslySetInnerHTML={{ __html: t('about-title') }}></h2>
-                        <p className="section-sub" style={{ marginBottom: '40px' }}>{t('about-sub')}</p>
+                        <div className="section-tag">{ourStory ? ourStory.tag : t('about-tag')}</div>
+                        <h2 className="section-title" dangerouslySetInnerHTML={{ __html: ourStory ? ourStory.title : t('about-title') }}></h2>
+                        <p className="section-sub" style={{ marginBottom: '40px' }}>{ourStory ? ourStory.subtitle : t('about-sub')}</p>
                         <div className="values" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px' }}>
-                            <div className="value-item"><strong>🌍</strong><div><div className="value-title">{t('v1')}</div></div></div>
-                            <div className="value-item"><strong>🌿</strong><div><div className="value-title">{t('v2')}</div></div></div>
-                            <div className="value-item"><strong>🚀</strong><div><div className="value-title">{t('v3')}</div></div></div>
-                            <div className="value-item"><strong>❤️</strong><div><div className="value-title">{t('v4')}</div></div></div>
+                            <div className="value-item"><strong>🌍</strong><div><div className="value-title">{ourStory ? ourStory.value1 : t('v1')}</div></div></div>
+                            <div className="value-item"><strong>🌿</strong><div><div className="value-title">{ourStory ? ourStory.value2 : t('v2')}</div></div></div>
+                            <div className="value-item"><strong>🚀</strong><div><div className="value-title">{ourStory ? ourStory.value3 : t('v3')}</div></div></div>
+                            <div className="value-item"><strong>❤️</strong><div><div className="value-title">{ourStory ? ourStory.value4 : t('v4')}</div></div></div>
                         </div>
                     </div>
                 </div>

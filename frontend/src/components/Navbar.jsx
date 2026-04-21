@@ -12,7 +12,6 @@ const Navbar = () => {
                 <div className="nav-inner">
                     <Link to="/" className="nav-logo" onClick={() => setMobileOpen(false)}>
                         <img src="/images/logo.png" alt="King's Afro Bites" style={{ height: '48px', objectFit: 'contain' }} onError={(e) => { e.target.style.display = 'none' }} />
-                        <span style={{ color: 'var(--orange)', fontWeight: 'bold', fontSize: '20px', marginLeft: '10px' }}>King's</span>
                     </Link>
                     <ul className="nav-links" style={{ display: 'flex', gap: '36px', listStyle: 'none' }}>
                         <li><Link to="/">Home</Link></li>
