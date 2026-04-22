@@ -90,3 +90,47 @@ class OurStory(models.Model):
     
     class Meta:
         verbose_name_plural = "Our Story"
+
+
+class HeroSection(models.Model):
+    tag = models.CharField(max_length=100, default="NOW SERVING HAMBURG", help_text="Small tag text above the title")
+    title = models.CharField(max_length=300, default="Reserve a table for bold African flavours.", help_text="Main hero heading")
+    subtitle = models.TextField(
+        default="King's Afro Bites brings a warm, modern dining experience built around Ghanaian and West African classics. Discover signature dishes, pre-order favourites, and book your table in seconds.",
+        help_text="Paragraph below the title"
+    )
+    cta_primary_text = models.CharField(max_length=50, default="Book a Table", help_text="Primary button label")
+    cta_secondary_text = models.CharField(max_length=50, default="Explore Menu", help_text="Secondary button label")
+    image = models.ImageField(upload_to='hero_images/', blank=True, null=True, help_text="Optional hero background image (recommended 1920x1080)")
+
+    def __str__(self):
+        return "Hero Section Content"
+
+    class Meta:
+        verbose_name_plural = "Hero Section"
+
+
+class HomePageSection(models.Model):
+    LAYOUT_CHOICES = [
+        ('text_only', 'Text Only'),
+        ('image_left', 'Image on Left'),
+        ('image_right', 'Image on Right'),
+    ]
+
+    tag = models.CharField(max_length=100, blank=True, help_text="Small tag above the title (optional)")
+    title = models.CharField(max_length=300, help_text="Section heading")
+    subtitle = models.TextField(blank=True, help_text="Description text (optional)")
+    content = models.TextField(blank=True, help_text="Additional HTML/text content (optional)")
+    image = models.ImageField(upload_to='section_images/', blank=True, null=True, help_text="Section image (recommended 1200x800)")
+    background_color = models.CharField(max_length=20, default="#000000", help_text="CSS background color, e.g. #f9f9f9")
+    text_color = models.CharField(max_length=20, default="#ffffff", help_text="CSS text color, e.g. #ffffff")
+    order = models.PositiveIntegerField(default=0, help_text="Display order (lower = higher on page)")
+    is_active = models.BooleanField(default=True, help_text="Uncheck to hide this section")
+    layout = models.CharField(max_length=20, choices=LAYOUT_CHOICES, default='text_only', help_text="Choose the section layout")
+
+    def __str__(self):
+        return f"Section: {self.title}"
+
+    class Meta:
+        verbose_name_plural = "Homepage Sections"
+        ordering = ['order']

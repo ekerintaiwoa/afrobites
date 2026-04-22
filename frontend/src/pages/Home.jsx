@@ -8,6 +8,8 @@ const Home = () => {
     const [featuredDishes, setFeaturedDishes] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [ourStory, setOurStory] = useState(null);
+    const [hero, setHero] = useState(null);
+    const [homepageSections, setHomepageSections] = useState([]);
 
     // Quick reservation state
     const [quickRes, setQuickRes] = useState({ date: new Date().toISOString().split('T')[0], time: '', guests: '2 guests', name: '', phone: '' });
@@ -24,7 +26,7 @@ const Home = () => {
                 if(res.data.success) {
                     setAvailabilityMsg({ type: 'success', text: res.data.message });
                     setAvailabilityAlts([]);
-                    setQuickRes({ ...quickRes, name: '', phone: '' }); // Reset fields
+                    setQuickRes({ ...quickRes, name: '', phone: '' });
                 } else {
                     setAvailabilityMsg({ type: 'error', text: res.data.message });
                     setAvailabilityAlts(res.data.alternatives || []);
@@ -56,7 +58,64 @@ const Home = () => {
                 }
             })
             .catch(err => console.error(err));
+
+        api.get('hero-section/')
+            .then(res => {
+                if (res.data && res.data.length > 0) {
+                    setHero(res.data[0]);
+                }
+            })
+            .catch(err => console.error(err));
+
+        api.get('homepage-sections/')
+            .then(res => {
+                setHomepageSections(res.data || []);
+            })
+            .catch(err => console.error(err));
     }, []);
+
+    // Helper: render a dynamic homepage section based on its layout
+    const renderSection = (section) => {
+        const sectionStyle = {
+            background: section.background_color || '#000',
+            color: section.text_color || '#fff',
+            padding: '80px 5%',
+        };
+
+        if (section.layout === 'text_only') {
+            return (
+                <section key={section.id} className="section" style={sectionStyle}>
+                    {section.tag && <div className="section-tag" style={{ color: section.text_color || '#fff' }}>{section.tag}</div>}
+                    <h2 className="section-title" style={{ color: section.text_color || '#fff' }}>{section.title}</h2>
+                    {section.subtitle && <p className="section-sub" style={{ color: section.text_color || '#fff', opacity: 0.8 }}>{section.subtitle}</p>}
+                    {section.content && <div style={{ marginTop: '24px', lineHeight: '1.8', maxWidth: '800px', opacity: 0.9 }} dangerouslySetInnerHTML={{ __html: section.content }} />}
+                    {section.image && (
+                        <div style={{ marginTop: '40px', borderRadius: '20px', overflow: 'hidden', maxWidth: '900px' }}>
+                            <img src={section.image} alt={section.title} style={{ width: '100%', display: 'block', borderRadius: '20px' }} />
+                        </div>
+                    )}
+                </section>
+            );
+        }
+
+        // image_left or image_right
+        const isImageLeft = section.layout === 'image_left';
+        return (
+            <section key={section.id} className="section" style={sectionStyle}>
+                <div className="about-grid" style={{ direction: isImageLeft ? 'ltr' : 'rtl' }}>
+                    {section.image && (
+                        <div className="about-img" style={{ backgroundImage: `url(${section.image})`, direction: 'ltr' }}></div>
+                    )}
+                    <div className="about-text" style={{ direction: 'ltr' }}>
+                        {section.tag && <div className="section-tag" style={{ color: section.text_color || '#fff' }}>{section.tag}</div>}
+                        <h2 className="section-title" style={{ color: section.text_color || '#fff' }}>{section.title}</h2>
+                        {section.subtitle && <p className="section-sub" style={{ color: section.text_color || '#fff', opacity: 0.8, marginBottom: '24px' }}>{section.subtitle}</p>}
+                        {section.content && <div style={{ lineHeight: '1.8', opacity: 0.9 }} dangerouslySetInnerHTML={{ __html: section.content }} />}
+                    </div>
+                </div>
+            </section>
+        );
+    };
 
     return (
         <div id="home-page" className="page active" style={{ padding: '0', minHeight: 'auto' }}>
@@ -66,17 +125,17 @@ const Home = () => {
                     <div className="hero-content" style={{ flex: '1.2', minWidth: '320px' }}>
                         <div className="hero-tag">
                             <span></span>
-                            {t('hero-tag')}
+                            {hero ? hero.tag : t('hero-tag')}
                         </div>
                         <h1 className="hero-title">
-                            Reserve a table for bold African flavours.
+                            {hero ? hero.title : 'Reserve a table for bold African flavours.'}
                         </h1>
                         <p className="hero-sub">
-                            King's Afro Bites brings a warm, modern dining experience built around Ghanaian and West African classics. Discover signature dishes, pre-order favourites, and book your table in seconds.
+                            {hero ? hero.subtitle : "King's Afro Bites brings a warm, modern dining experience built around Ghanaian and West African classics. Discover signature dishes, pre-order favourites, and book your table in seconds."}
                         </p>
                         <div className="hero-btns">
-                            <button className="btn-primary" onClick={() => setIsResModalOpen(true)}>{t('cta-order')}</button>
-                            <Link to="/menu" className="btn-outline">{t('cta-menu')}</Link>
+                            <button className="btn-primary" onClick={() => setIsResModalOpen(true)}>{hero ? hero.cta_primary_text : t('cta-order')}</button>
+                            <Link to="/menu" className="btn-outline">{hero ? hero.cta_secondary_text : t('cta-menu')}</Link>
                         </div>
                     </div>
 
@@ -219,6 +278,9 @@ const Home = () => {
                     </div>
                 </section>
             )}
+
+            {/* Dynamic Homepage Sections from Django Admin */}
+            {homepageSections.map(section => renderSection(section))}
         </div>
     );
 };

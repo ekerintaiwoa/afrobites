@@ -1,8 +1,8 @@
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import Category, MenuItem, BlogPost, Order, Reservation, Comment, Review, AvailableSlot, OurStory
-from .serializers import CategorySerializer, MenuItemSerializer, BlogPostSerializer, OrderSerializer, ReservationSerializer, CommentSerializer, ReviewSerializer, OurStorySerializer
+from .models import Category, MenuItem, BlogPost, Order, Reservation, Comment, Review, AvailableSlot, OurStory, HeroSection, HomePageSection
+from .serializers import CategorySerializer, MenuItemSerializer, BlogPostSerializer, OrderSerializer, ReservationSerializer, CommentSerializer, ReviewSerializer, OurStorySerializer, HeroSectionSerializer, HomePageSectionSerializer
 
 class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Category.objects.all()
@@ -35,6 +35,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
 class OurStoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = OurStory.objects.all()
     serializer_class = OurStorySerializer
+
+class HeroSectionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = HeroSection.objects.all()
+    serializer_class = HeroSectionSerializer
+
+class HomePageSectionViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = HomePageSection.objects.filter(is_active=True).order_by('order')
+    serializer_class = HomePageSectionSerializer
 
 @api_view(['POST'])
 def check_availability(request):

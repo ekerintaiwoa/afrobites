@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, MenuItem, BlogPost, Order, OrderItem, Reservation, Comment, Review, OurStory
+from .models import Category, MenuItem, BlogPost, Order, OrderItem, Reservation, Comment, Review, OurStory, HeroSection, HomePageSection
 
 class MenuItemBasicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -63,3 +63,14 @@ class OurStorySerializer(serializers.ModelSerializer):
     class Meta:
         model = OurStory
         fields = '__all__'
+
+class HeroSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HeroSection
+        fields = '__all__'
+
+class HomePageSectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HomePageSection
+        fields = '__all__'
+
